@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "Task", description = "Task API")
 @RestController
@@ -76,6 +77,21 @@ public class TaskController {
 
         return ResponseBuilder.generateResponse(
                 "Update task by id successfully!",
+                HttpStatus.OK,
+                response
+        );
+    }
+
+    @SecurityRequirements
+    @PatchMapping("/{id}")
+    public ResponseEntity<BaseResponse<TaskResponse>> patchUpdateById(
+            @PathVariable("id") Long id,
+            @RequestBody Map<String, Object> fields) {
+
+        TaskResponse response = taskService.patchUpdateById(id, fields);
+
+        return ResponseBuilder.generateResponse(
+                "Patch update a task by id successfully!",
                 HttpStatus.OK,
                 response
         );

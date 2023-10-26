@@ -18,8 +18,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -72,5 +75,22 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.save(taskEntity.get());
 
         return taskMapper.convertTaskEntityToTaskResponse(taskEntity.get());
+    }
+
+    @Override
+    public TaskResponse patchUpdateById(Long id, Map<String, Object> fields) {
+        Optional<TaskEntity> taskEntity = taskRepository.findById(id);
+        if (!taskEntity.isPresent())
+            throw new NotFoundException(DoctorAnywhereErrorCodeEnum.NOT_FOUND_TASK, DoctorAnywhereErrorCodeEnum.NOT_FOUND_TASK.getMessage());
+
+        fields.forEach((key, value) -> {
+            Field field = ReflectionUtils.findField(TaskEntity.class, key);
+            field.setAccessible(true);
+            ReflectionUtils.setField(field, taskEntity.get(), value);
+        });
+
+        TaskEntity result = taskRepository.save(taskEntity.get());
+
+        return taskMapper.convertTaskEntityToTaskResponse(result);
     }
 }
