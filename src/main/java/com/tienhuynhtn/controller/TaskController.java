@@ -109,6 +109,24 @@ public class TaskController {
         );
     }
 
+    @Operation(summary = "Get a task by task ID", description = "[User] Get a specific task by task ID")
+    @Parameter(name = "id", description = "A specific task ID", in = ParameterIn.PATH, required = true, example = "1")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully!", content = @Content(examples = {
+                    @ExampleObject(value = "{\n" +
+                            "    \"id\": 1,\n" +
+                            "    \"title\": \"Task no 1\",\n" +
+                            "    \"description\": \"Task no 1 description\",\n" +
+                            "    \"completed\": false\n" +
+                            "  }")
+            })),
+            @ApiResponse(responseCode = "204", description = "No-content!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "400", description = "Bad Request!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Unauthenticated!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "Unauthorized!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "Resource Not Found!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error!", content = @Content(schema = @Schema(hidden = true)))
+    })
     @SecurityRequirement(name = OpenApiConfig.securitySchemeName)
     @RolesAllowed({RoleConstant.USER})
     @GetMapping(value = "/{id}")
