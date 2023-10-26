@@ -16,7 +16,7 @@ public class TaskEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "Id", nullable = false)
-    private long id;
+    private Long id;
     @Basic
     @Column(name = "Title", nullable = false, length = 100)
     private String title;
@@ -25,6 +25,6 @@ public class TaskEntity {
     private String description;
     @Basic
     @Column(name = "Completed", nullable = false)
-    private boolean completed;
+    private Boolean completed;
 
 }

@@ -89,7 +89,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/webjars/**",
                         "/ws-message/**").permitAll()
                 .antMatchers("/api/auth/**",
-                        "/api").permitAll()
+                        "/api",
+                        "/api/**").permitAll()
                 .anyRequest()
                 .authenticated();
 
