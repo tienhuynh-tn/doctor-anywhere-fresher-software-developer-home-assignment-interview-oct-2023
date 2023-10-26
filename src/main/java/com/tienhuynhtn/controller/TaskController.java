@@ -41,4 +41,17 @@ public class TaskController {
                 responses
         );
     }
+
+    @SecurityRequirements
+    @GetMapping(value = "/count")
+    public ResponseEntity<BaseResponse<Integer>> count() {
+
+        int response = taskService.count();
+
+        return ResponseBuilder.generateResponse(
+                "Count list of all tasks successfully!",
+                HttpStatus.OK,
+                response
+        );
+    }
 }

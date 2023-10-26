@@ -41,4 +41,9 @@ public class TaskServiceImpl implements TaskService {
                 .map(entity -> taskMapper.convertTaskEntityToTaskResponse(entity))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public int count() {
+        return (int) taskRepository.count();
+    }
 }

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface TaskService {
     List<TaskResponse> getAllTasks(BasePaginationRequest basePaginationRequest);
+
+    int count();
 }
