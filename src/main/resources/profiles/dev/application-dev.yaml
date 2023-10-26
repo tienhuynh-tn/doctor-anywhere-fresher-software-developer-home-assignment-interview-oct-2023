@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    password: 1234567890
-    url: jdbc:sqlserver://localhost:1433;databaseName=DoctorAnywhere;instanceName=TIENHUYNHTN;encrypt=true;trustServerCertificate=true;
-    username: sa
+    password: your-password
+    url: jdbc:sqlserver://localhost:1433;databaseName=DoctorAnywhere;instanceName=YOUR-INSTANCE-NAME;encrypt=true;trustServerCertificate=true;
+    username: your-username
 
 logging:
   level:
