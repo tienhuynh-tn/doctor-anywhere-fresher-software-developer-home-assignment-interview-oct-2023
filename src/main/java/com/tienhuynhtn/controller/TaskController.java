@@ -180,6 +180,33 @@ public class TaskController {
         );
     }
 
+    @Operation(summary = "Patch update a task by task Id", description = "[User] Patch update a task by task Id")
+    @Parameter(name = "id", description = "A specific task ID", in = ParameterIn.PATH, required = true, example = "1")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Fields Request", required = true, content = @Content(
+            examples = {
+                    @ExampleObject(name = "Update title", value = "{\n" +
+                            "    \"title\": \"New title\"\n" +
+                            "}"),
+                    @ExampleObject(name = "Update description", value = "{\n" +
+                            "    \"description\": \"New title\"\n" +
+                            "}"),
+                    @ExampleObject(name = "Update completed status", value = "{\n" +
+                            "    \"completed\": true\n" +
+                            "}")}))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully!", content = @Content(examples = {
+                    @ExampleObject(value = "{\n" +
+                            "    \"id\": 1,\n" +
+                            "    \"title\": \"New Title\",\n" +
+                            "    \"description\": \"New Description\",\n" +
+                            "    \"completed\": true\n" +
+                            "  }")})),
+            @ApiResponse(responseCode = "400", description = "Bad Request!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Unauthenticated!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "Unauthorized!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "Resource Not Found!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error!", content = @Content(schema = @Schema(hidden = true)))
+    })
     @SecurityRequirement(name = OpenApiConfig.securitySchemeName)
     @RolesAllowed({RoleConstant.USER})
     @PatchMapping("/{id}")
