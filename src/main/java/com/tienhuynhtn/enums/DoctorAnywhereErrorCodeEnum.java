@@ -17,6 +17,7 @@ public enum DoctorAnywhereErrorCodeEnum {
     UNAUTHORIZED(HttpStatus.FORBIDDEN, 403000, "Không có quyền truy cập"),
 
     // 404 - NOT FOUND
+    NOT_FOUND_TASK(HttpStatus.NOT_FOUND, 404000, "Không tìm thấy công việc"),
 
     ;
 

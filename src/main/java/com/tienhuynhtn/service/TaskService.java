@@ -9,4 +9,6 @@ public interface TaskService {
     List<TaskResponse> getAllTasks(BasePaginationRequest basePaginationRequest);
 
     int count();
+
+    TaskResponse getById(Long id);
 }

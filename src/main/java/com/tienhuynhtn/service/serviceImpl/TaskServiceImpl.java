@@ -3,6 +3,8 @@ package com.tienhuynhtn.service.serviceImpl;
 import com.tienhuynhtn.basemodels.BasePaginationRequest;
 import com.tienhuynhtn.constant.DefaultSortPropertyConstant;
 import com.tienhuynhtn.entity.TaskEntity;
+import com.tienhuynhtn.enums.DoctorAnywhereErrorCodeEnum;
+import com.tienhuynhtn.exception.NotFoundException;
 import com.tienhuynhtn.mapper.TaskMapper;
 import com.tienhuynhtn.repository.TaskRepository;
 import com.tienhuynhtn.response.TaskResponse;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,5 +48,14 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public int count() {
         return (int) taskRepository.count();
+    }
+
+    @Override
+    public TaskResponse getById(Long id) {
+        Optional<TaskEntity> taskEntity = taskRepository.findById(id);
+        if (!taskEntity.isPresent())
+            throw new NotFoundException(DoctorAnywhereErrorCodeEnum.NOT_FOUND_TASK, DoctorAnywhereErrorCodeEnum.NOT_FOUND_TASK.getMessage());
+
+        return taskMapper.convertTaskEntityToTaskResponse(taskEntity.get());
     }
 }
