@@ -2,7 +2,9 @@ package com.tienhuynhtn.service.serviceImpl;
 
 import com.tienhuynhtn.dto.TokenDTO;
 import com.tienhuynhtn.enums.DoctorAnywhereErrorCodeEnum;
+import com.tienhuynhtn.exception.BadRequestException;
 import com.tienhuynhtn.exception.ForbiddenException;
+import com.tienhuynhtn.exception.NotFoundException;
 import com.tienhuynhtn.request.AuthenticateRequest;
 import com.tienhuynhtn.security.CustomUserDetailsService;
 import com.tienhuynhtn.security.TokenProvider;
@@ -28,6 +30,12 @@ public class AuthenticateServiceImpl implements AuthenticateService {
     @Override
     public TokenDTO authenticate(HttpServletRequest request, AuthenticateRequest authenticateRequest) {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(authenticateRequest.getUsername());
+
+        if (!userDetails.getUsername().equals(authenticateRequest.getUsername()))
+            throw new NotFoundException(DoctorAnywhereErrorCodeEnum.NOT_FOUND_ACCOUNT, DoctorAnywhereErrorCodeEnum.NOT_FOUND_ACCOUNT.getMessage());
+
+        if (!userDetails.getPassword().equals(authenticateRequest.getPassword()))
+            throw new BadRequestException(DoctorAnywhereErrorCodeEnum.INVALID_PASSWORD, DoctorAnywhereErrorCodeEnum.INVALID_PASSWORD.getMessage());
 
         if (!userDetails.isAccountNonLocked()) {
             throw new ForbiddenException(DoctorAnywhereErrorCodeEnum.UNAUTHORIZED, DoctorAnywhereErrorCodeEnum.UNAUTHORIZED.getMessage());

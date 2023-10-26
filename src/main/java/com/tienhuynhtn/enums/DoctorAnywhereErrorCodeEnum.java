@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum DoctorAnywhereErrorCodeEnum {
 
     // 400 - BAD REQUEST
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, 400000, "Mật khẩu không hợp lệ"),
 
     // 401 - UNAUTHENTICATED
     UNAUTHENTICATED(HttpStatus.UNAUTHORIZED, 401000, "Chưa xác thực người dùng"),
@@ -18,6 +19,7 @@ public enum DoctorAnywhereErrorCodeEnum {
 
     // 404 - NOT FOUND
     NOT_FOUND_TASK(HttpStatus.NOT_FOUND, 404000, "Không tìm thấy công việc"),
+    NOT_FOUND_ACCOUNT(HttpStatus.BAD_REQUEST, 400001, "Không tìm thấy tài khoản"),
 
     ;
 

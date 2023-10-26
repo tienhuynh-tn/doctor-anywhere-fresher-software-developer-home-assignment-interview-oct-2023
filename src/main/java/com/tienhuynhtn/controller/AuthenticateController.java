@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @Tag(name = "Authentication", description = "Authenticate API")
 @RestController
@@ -32,7 +31,7 @@ public class AuthenticateController {
     @Autowired
     private AuthenticateService authenticateService;
 
-    @Operation(summary = "Authenticate an account", description = "[All] Authenticate an account by username (phone) and password (optional)")
+    @Operation(summary = "Authenticate an account", description = "[Unauthenticated] Authenticate an account by username and password")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Authenticated Request", required = true, content = @Content(
             examples = {
                     @ExampleObject(name = "User Authenticate Request", value = "{\n" +
@@ -52,7 +51,9 @@ public class AuthenticateController {
     })
     @SecurityRequirements
     @PostMapping
-    public ResponseEntity<BaseResponse<TokenDTO>> authenticate(HttpServletRequest request, @RequestBody @Valid AuthenticateRequest authenticateRequest) {
+    public ResponseEntity<BaseResponse<TokenDTO>> authenticate(
+            HttpServletRequest request,
+            @RequestBody AuthenticateRequest authenticateRequest) {
 
         TokenDTO token = authenticateService.authenticate(request, authenticateRequest);
 
