@@ -93,4 +93,13 @@ public class TaskServiceImpl implements TaskService {
 
         return taskMapper.convertTaskEntityToTaskResponse(result);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        Optional<TaskEntity> taskEntity = taskRepository.findById(id);
+        if (!taskEntity.isPresent())
+            throw new NotFoundException(DoctorAnywhereErrorCodeEnum.NOT_FOUND_TASK, DoctorAnywhereErrorCodeEnum.NOT_FOUND_TASK.getMessage());
+
+        taskRepository.delete(taskEntity.get());
+    }
 }

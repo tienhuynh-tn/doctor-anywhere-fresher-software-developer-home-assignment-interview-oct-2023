@@ -17,4 +17,6 @@ public interface TaskService {
     TaskResponse updateById(Long id, TaskRequest taskRequest);
 
     TaskResponse patchUpdateById(Long id, Map<String, Object> fields);
+
+    void deleteById(Long id);
 }

@@ -96,4 +96,13 @@ public class TaskController {
                 response
         );
     }
+
+    @SecurityRequirements
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable("id") Long id) {
+
+        taskService.deleteById(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
