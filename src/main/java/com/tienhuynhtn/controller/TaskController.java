@@ -8,6 +8,16 @@ import com.tienhuynhtn.handler.ResponseBuilder;
 import com.tienhuynhtn.request.TaskRequest;
 import com.tienhuynhtn.response.TaskResponse;
 import com.tienhuynhtn.service.TaskService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +37,37 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @Operation(summary = "Get all tasks", description = "[User] Get the list of all tasks")
+    @Parameters(value = {
+            @Parameter(name = "sort",
+                    in = ParameterIn.QUERY,
+                    description = "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending by id. Multiple sort criteria are supported.",
+                    example ="[\"title,asc\", \"description,desc\"]",
+                    array = @ArraySchema(schema = @Schema(implementation = String.class), maxItems = 3),
+                    allowReserved = true)
+    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully!", content = @Content(examples = {
+                    @ExampleObject(value = "[\n" +
+                            "    {\n" +
+                            "      \"id\": 1,\n" +
+                            "      \"title\": \"Task no 1\",\n" +
+                            "      \"description\": \"Task no 1 description\",\n" +
+                            "      \"completed\": false\n" +
+                            "    },\n" +
+                            "    {\n" +
+                            "      \"id\": 2,\n" +
+                            "      \"title\": \"Task no 2\",\n" +
+                            "      \"description\": \"Task no 2 description\",\n" +
+                            "      \"completed\": false\n" +
+                            "    }\n" +
+                            "  ]")})),
+            @ApiResponse(responseCode = "400", description = "Bad Request!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Unauthenticated!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "Unauthorized!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "Resource Not Found!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error!", content = @Content(schema = @Schema(hidden = true)))
+    })
     @SecurityRequirement(name = OpenApiConfig.securitySchemeName)
     @RolesAllowed({RoleConstant.USER})
     @GetMapping
