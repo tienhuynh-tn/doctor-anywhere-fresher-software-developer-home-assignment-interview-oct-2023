@@ -243,6 +243,27 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Operation(summary = "Create a task", description = "[User] Create a task and its information")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Task Create Request", required = true, content = @Content(
+            examples = {
+                    @ExampleObject(value = "{\n" +
+                            "  \"title\": \"Create Title\",\n" +
+                            "  \"description\": \"Create Description\"\n" +
+                            "}")}))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully!", content = @Content(examples = {
+                    @ExampleObject(value = "{\n" +
+                            "    \"id\": 1,\n" +
+                            "    \"title\": \"Create Title\",\n" +
+                            "    \"description\": \"Create Description\",\n" +
+                            "    \"completed\": false\n" +
+                            "  }")})),
+            @ApiResponse(responseCode = "400", description = "Bad Request!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Unauthenticated!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "Unauthorized!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "Resource Not Found!", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error!", content = @Content(schema = @Schema(hidden = true)))
+    })
     @SecurityRequirement(name = OpenApiConfig.securitySchemeName)
     @RolesAllowed({RoleConstant.USER})
     @PostMapping
