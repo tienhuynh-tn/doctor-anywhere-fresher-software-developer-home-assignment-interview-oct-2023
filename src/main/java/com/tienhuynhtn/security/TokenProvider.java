@@ -1,18 +1,36 @@
 package com.tienhuynhtn.security;
 
+import com.tienhuynhtn.util.DateTimeUtil;
 import com.tienhuynhtn.util.JwtUtil;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class TokenProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenProvider.class);
+
+    public String generateToken(Authentication authentication) {
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        Date now = DateTimeUtil.getDateNow();
+        Date expiryDate = new Date(now.getTime() + JwtUtil.JWT_EXPIRATION);
+
+        return Jwts.builder()
+                .setSubject(String.valueOf(customUserDetails.getId()))
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, JwtUtil.JWT_SECRET)
+                .claim("username", customUserDetails.getUsername())
+                .claim("role", customUserDetails.getRole())
+                .claim("authorities", customUserDetails.getAuthorities())
+                .compact();
+    }
 
     public static boolean validateToken(String token) {
         try {

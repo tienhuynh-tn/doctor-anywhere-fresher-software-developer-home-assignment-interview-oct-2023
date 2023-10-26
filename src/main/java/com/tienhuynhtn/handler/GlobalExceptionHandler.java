@@ -5,6 +5,7 @@ import com.tienhuynhtn.enums.DoctorAnywhereErrorCodeEnum;
 import com.tienhuynhtn.exception.BadRequestException;
 import com.tienhuynhtn.exception.ForbiddenException;
 import com.tienhuynhtn.exception.NotFoundException;
+import com.tienhuynhtn.exception.UnauthenticatedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 500,
                 Collections.singletonList(String.valueOf(ex)));
+    }
+
+    @ExceptionHandler(value = UnauthenticatedException.class)
+    public ResponseEntity<BaseErrorResponse> handleUnauthenticatedException(UnauthenticatedException ex) {
+        List<String> details = new ArrayList<>();
+        details.add(ex.getMessage());
+        LOGGER.warn("Unauthenticated: " + details);
+        return ResponseBuilder.generateErrorResponse(
+                "Unauthenticated!",
+                HttpStatus.UNAUTHORIZED,
+                DoctorAnywhereErrorCodeEnum.UNAUTHENTICATED.getCode(),
+                details);
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)

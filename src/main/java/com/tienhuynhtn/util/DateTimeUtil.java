@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 public class DateTimeUtil {
 
@@ -14,5 +15,13 @@ public class DateTimeUtil {
 
     public static ZonedDateTime getZoneDateTimeNow() {
         return ZonedDateTime.ofInstant(Instant.now(), ZoneId.of(DateTimeConstant.ZONE_ID));
+    }
+
+    public static Date convertZoneDateTimeToDate(ZonedDateTime zonedDateTime) {
+        return Date.from(zonedDateTime.toInstant());
+    }
+
+    public static Date getDateNow() {
+        return new Date(convertZoneDateTimeToDate(getZoneDateTimeNow()).getTime());
     }
 }
