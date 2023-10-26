@@ -7,6 +7,7 @@ import com.tienhuynhtn.enums.DoctorAnywhereErrorCodeEnum;
 import com.tienhuynhtn.exception.NotFoundException;
 import com.tienhuynhtn.mapper.TaskMapper;
 import com.tienhuynhtn.repository.TaskRepository;
+import com.tienhuynhtn.request.TaskRequest;
 import com.tienhuynhtn.response.TaskResponse;
 import com.tienhuynhtn.service.TaskService;
 import com.tienhuynhtn.util.PaginationUtil;
@@ -55,6 +56,20 @@ public class TaskServiceImpl implements TaskService {
         Optional<TaskEntity> taskEntity = taskRepository.findById(id);
         if (!taskEntity.isPresent())
             throw new NotFoundException(DoctorAnywhereErrorCodeEnum.NOT_FOUND_TASK, DoctorAnywhereErrorCodeEnum.NOT_FOUND_TASK.getMessage());
+
+        return taskMapper.convertTaskEntityToTaskResponse(taskEntity.get());
+    }
+
+    @Override
+    public TaskResponse updateById(Long id, TaskRequest taskRequest) {
+        Optional<TaskEntity> taskEntity = taskRepository.findById(id);
+        if (!taskEntity.isPresent())
+            throw new NotFoundException(DoctorAnywhereErrorCodeEnum.NOT_FOUND_TASK, DoctorAnywhereErrorCodeEnum.NOT_FOUND_TASK.getMessage());
+
+        taskEntity.get().setTitle(taskRequest.getTitle());
+        taskEntity.get().setDescription(taskRequest.getDescription());
+        taskEntity.get().setCompleted(taskRequest.getCompleted());
+        taskRepository.save(taskEntity.get());
 
         return taskMapper.convertTaskEntityToTaskResponse(taskEntity.get());
     }

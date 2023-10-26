@@ -1,6 +1,7 @@
 package com.tienhuynhtn.service;
 
 import com.tienhuynhtn.basemodels.BasePaginationRequest;
+import com.tienhuynhtn.request.TaskRequest;
 import com.tienhuynhtn.response.TaskResponse;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface TaskService {
     int count();
 
     TaskResponse getById(Long id);
+
+    TaskResponse updateById(Long id, TaskRequest taskRequest);
 }

@@ -3,6 +3,7 @@ package com.tienhuynhtn.controller;
 import com.tienhuynhtn.basemodels.BasePaginationRequest;
 import com.tienhuynhtn.basemodels.BaseResponse;
 import com.tienhuynhtn.handler.ResponseBuilder;
+import com.tienhuynhtn.request.TaskRequest;
 import com.tienhuynhtn.response.TaskResponse;
 import com.tienhuynhtn.service.TaskService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
@@ -60,6 +61,21 @@ public class TaskController {
 
         return ResponseBuilder.generateResponse(
                 "Get a task by id successfully!",
+                HttpStatus.OK,
+                response
+        );
+    }
+
+    @SecurityRequirements
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<BaseResponse<TaskResponse>> updateById(
+            @PathVariable("id") Long id,
+            @RequestBody TaskRequest taskRequest) {
+
+        TaskResponse response = taskService.updateById(id, taskRequest);
+
+        return ResponseBuilder.generateResponse(
+                "Update task by id successfully!",
                 HttpStatus.OK,
                 response
         );
