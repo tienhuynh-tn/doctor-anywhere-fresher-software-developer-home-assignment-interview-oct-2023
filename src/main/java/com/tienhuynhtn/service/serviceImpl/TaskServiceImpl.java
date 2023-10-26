@@ -102,4 +102,15 @@ public class TaskServiceImpl implements TaskService {
 
         taskRepository.delete(taskEntity.get());
     }
+
+    @Override
+    public TaskResponse create(TaskRequest taskRequest) {
+        TaskEntity taskEntity = new TaskEntity();
+        taskEntity.setTitle(taskRequest.getTitle());
+        taskEntity.setDescription(taskRequest.getDescription());
+        taskEntity.setCompleted(false);
+        TaskEntity result = taskRepository.save(taskEntity);
+
+        return taskMapper.convertTaskEntityToTaskResponse(result);
+    }
 }

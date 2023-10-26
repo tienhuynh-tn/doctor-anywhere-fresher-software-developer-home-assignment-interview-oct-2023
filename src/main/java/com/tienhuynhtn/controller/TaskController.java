@@ -105,4 +105,17 @@ public class TaskController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @SecurityRequirements
+    @PostMapping
+    public ResponseEntity<BaseResponse<TaskResponse>> create(@RequestBody TaskRequest taskRequest) {
+
+        TaskResponse response = taskService.create(taskRequest);
+
+        return ResponseBuilder.generateResponse(
+                "Create a task successfully!",
+                HttpStatus.CREATED,
+                response
+        );
+    }
 }
